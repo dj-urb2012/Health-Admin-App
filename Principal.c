@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <stdbool.h>
 #include "Utils\Funciones.c"
-#include "Utils\Sesion.c"
+//#include "Utils\Sesion.c"
 
 void imprimirMenu(void);
 

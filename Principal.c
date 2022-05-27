@@ -2,9 +2,14 @@
 #include <stdlib.h>
 #include <Windows.h>
 #include <stdbool.h>
+#include <string.h>
 #include "Utils\Funciones.c"
-//#include "Utils\Sesion.c"
+#include "Utils\Sesion.c"
 
+void configurarSesion(void);
+bool autenticarDatos(char p1[], char p2[]);
+void iniciarSesion(void);
+void verificarConfiguracionDeSesion(void);
 void imprimirMenu(void);
 
 int main(int argc, char const *argv[])
@@ -12,6 +17,7 @@ int main(int argc, char const *argv[])
     int opcion = 0;
     do
     {
+        verificarConfiguracionDeSesion();
         imprimirMenu();
         printf("Ingrese una opcion\n> ");
         scanf("%d", &opcion);
@@ -28,7 +34,10 @@ int main(int argc, char const *argv[])
         case 5: 
             break;
         case 6:
-            printf("_=SE HA CERRADO SESION=_");
+            configuracionDeUsuario();
+            break;
+        case 7:
+            printf("\nSE HA CERRADO SESION\n");
             break;
         default:
             printf("\nOpcion invalida!");
@@ -36,7 +45,7 @@ int main(int argc, char const *argv[])
             system("cls");
             break;
         }
-    } while (opcion != 6);
+    } while (opcion != 7);
     
 
     return 0;

@@ -6,12 +6,12 @@
 
 typedef struct
 {
-    char id[25];
+    char id[20];
     char nombres[50];
     char apellidos[50];
     int edad;
-    char sexo[29];
-    char ciudad[200];
+    char sexo[30];
+    char ciudad[20];
     char numTelefono[10];
     char observaciones[200];
 } Paciente;

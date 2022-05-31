@@ -17,30 +17,38 @@ void imprimirMenu(void);
 
 int main(int argc, char const *argv[])
 {
+    //Verificar si existe un usuario creado
     verificarConfiguracionDeSesion();
     int opcion = 0;
     do
     {
         imprimirMenu();
-        printf("Ingrese una opcion\n> ");
+        printf("Ingrese una opcion: ");
         scanf("%d", &opcion);
         switch (opcion)
         {
         case 1:
+            system("cls");
             gestionPacientes();
             break;
         case 2: 
+            system("cls");
             break;
         case 3: 
+            system("cls");
             break;
         case 4:
+            system("cls");
             break;
         case 5: 
+            system("cls");
             break;
         case 6:
+            system("cls");
             configuracionDeUsuario();
             break;
         case 7:
+            system("cls");
             printf("\nSE HA CERRADO SESION\n");
             break;
         default:

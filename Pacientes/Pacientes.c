@@ -78,7 +78,6 @@ void cargarIDs(void)
     fopen_s(&arregloID, "bin\\IDs.bin", "rb");
     if(arregloID == NULL)
     {   
-        printf("NO SE PUDIERON CARGAR LOS DATOS, REGISTRE UN PACIENTE\n");
         fopen_s(&arregloID, "bin\\IDs.bin", "wb");
     }
     else 
@@ -87,6 +86,18 @@ void cargarIDs(void)
     }
     fclose(arregloID);
 }
+
+void verificarRegistros(void)
+{
+    fopen_s(&archivoPacientes, "bin\\registroPacientes.bin", "rb");
+    if(archivoPacientes == NULL)
+    {
+        printf("AUN NO HAY DATOS REGISTRADOS, REGISTRE UN PACIENTE\n");
+        fopen_s(&archivoPacientes, "bin\\registroPacientes.bin", "wb");
+    }
+    fclose(archivoPacientes);
+}
+
 //Agrega un paciente, guarda su informacion en un buffer y lo almacena en un fichero binario
 void agregarPaciente(void)
 {
@@ -260,6 +271,7 @@ void menuBuscarPaciente(void)
 //Funcion principal del modulo
 void gestionPacientes(void)
 {
+    verificarRegistros();
     cargarCantidadPacientes();
     cargarIDs();
     int op = 0;

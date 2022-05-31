@@ -141,6 +141,8 @@ void cambiarNombreUsuario(void)
         printf("Ingrese el nuevo nombre de usuario: ");
         scanf("%s", nuevoNomUsuario);
         fwrite(&nuevoNomUsuario, MAX_PASSWORD_SIZE, 1, user);
+        system("cls");
+        printf("El nombre de usuario se cambio exitosamente!\n");
     } else
     {
         system("cls");
@@ -173,6 +175,8 @@ void cambiarPasswd()
         printf("Ingrese la nueva contrasena: ");
         scanf("%s", nuevaContrasena);
         fwrite(&nuevaContrasena, MAX_PASSWORD_SIZE, 1, passwd);
+        system("cls");
+        printf("La contrasena se cambio exitosamente!\n");
     } 
     else 
     {

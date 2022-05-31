@@ -160,8 +160,6 @@ void resultadoBusqueda(int indice)
     printf("ID: %s\n", registroPacientes[indice].id);
     printf("OBSERVACIONES: %s\n", registroPacientes[indice].observaciones);
     LINE;
-    system("pause");
-    system("cls");
 }
 
 //Busca un paciente con un parametro especifico
@@ -182,6 +180,8 @@ void buscarPaciente(int parametroBusqueda)
                 resultadoBusqueda(i);
             }
         }
+        system("pause");
+        system("cls");
         break;
     case 2:
         printf("Ingrese la edad: ");
@@ -194,6 +194,8 @@ void buscarPaciente(int parametroBusqueda)
                 resultadoBusqueda(i);
             }
         }
+        system("pause");
+        system("cls");
         break;
     case 3:
         printf("Ingrese el sexo: ");
@@ -206,6 +208,8 @@ void buscarPaciente(int parametroBusqueda)
                 resultadoBusqueda(i);
             }
         }
+        system("pause");
+        system("cls");
         break;
     case 4:
         printf("Ingrese la ciudad: ");
@@ -218,6 +222,8 @@ void buscarPaciente(int parametroBusqueda)
                 resultadoBusqueda(i);
             }
         }
+        system("pause");
+        system("cls");
         break;
     case 5:
         printf("Ingrese la ID: ");
@@ -230,6 +236,8 @@ void buscarPaciente(int parametroBusqueda)
                 resultadoBusqueda(i);
             }
         }
+        system("pause");
+        system("cls");
         break;
     default:
         system("cls");

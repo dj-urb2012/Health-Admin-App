@@ -8,6 +8,7 @@
 #include "Utils\Sesion.c"
 #include "Pacientes\Pacientes.h"
 #include "Pacientes\Pacientes.c"
+//#include "Citas\Citas.c"
 
 void configurarSesion(void);
 bool autenticarDatos(char p1[], char p2[]);

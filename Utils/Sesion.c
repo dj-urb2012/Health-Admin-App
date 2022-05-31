@@ -85,7 +85,8 @@ void verificarConfiguracionDeSesion(void)
 void configuracionDeUsuario(void)
 {
     int op = 0;
-    printf("1.Cambiar nombre de usuario\n2. Cambiar contraseña\n");
+    printf("1. Cambiar nombre de usuario\n2. Cambiar contrasena\n");
+    printf("3. Volver al menu principal\n");
     printf("Ingrese una opcion: ");
     scanf("%d", &op);
     do 
@@ -94,17 +95,20 @@ void configuracionDeUsuario(void)
         {
         case 1:
             cambiarNombreUsuario();
-            op = 3;
+            op = 4;
             break;
         case 2:
             cambiarPasswd();
-            op = 3;
+            op = 4;
+            break;
+        case 3:
+            op = 4;
             break;
         default:
             printf("Opcion invalida\n");
             break;
         }
-    } while(op != 3);
+    } while(op != 4);
 }
 
 void cambiarNombreUsuario(void)
@@ -128,7 +132,6 @@ void cambiarNombreUsuario(void)
         fwrite(&nuevoNomUsuario, MAX_PASSWORD_SIZE, 1, user);
     } else printf("Usuario o contrasena incorrectos\n");
 
-    
     fclose(user);
     fclose(passwd);
 

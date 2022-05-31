@@ -1,42 +1,129 @@
-#include<stdio.h>
+#include <stdio.h>
+#include <time.h>
+#include "Pacientes.h"
 
-struct Paciente
+FILE* archivo;
+FILE* archivoPacientes;
+Paciente registroPacientes[NUM_MAXIMO_REG];
+Paciente buffer;
+
+int cantidadPacientes;
+
+int numeroRandom(void)
 {
-    int id;
-    char nombre[30];
-    int edad[3];
-    char sexo[10];
-    char direccionCasa[200];
-} citas[100];
+    srand(time(NULL));
+    return rand() % 1001;
+}
 
-int main(int argc, char const *argv[])
+const char* generarID(void)
 {
-    int cantidad = 0;
+    int random = numeroRandom();
+    char randIntString[10];
+    sprintf(randIntString, "%d", random);
+    char *ID;
+    strcpy(ID, "PAC-");
+    strcat(ID, randIntString);
+    return ID;
+}
 
-    printf("¿Cuántos citas desea almacenar?");
-    scanf("%i", &cantidad);
+void cargarCantidadPacientes(void)
+{
+    fopen_s(&archivo, "bin\\cantidadPacientes.bin", "rb");
+    if(archivo == NULL)
+    {
+        cantidadPacientes = 0;
+        fopen_s(&archivo, "bin\\cantidadPacientes.bin", "wb");
+        fwrite(&cantidadPacientes, sizeof(int), 1, archivo);
+    } else fread(&cantidadPacientes, sizeof(int), 1, archivo);
+    fclose(archivo);
+}
 
-    for(int i = 0; i < cantidad; i++){
-        printf("Id: ");
-        scanf("%i", &citas[i].id);
-        printf("Nombre: ");
-        scanf(" %[^\n]", citas[i].nombre);
-        printf("Edad: ");
-        scanf(" %[^\n]", citas[i].edad);
-        printf("Sexo: ");
-        scanf("%f", &citas[i].sexo);
-        printf("Dirección: ");
-        scanf("%f", &citas[i].direccionCasa);
-    }
+void agregarPaciente(void)
+{
+    fopen_s(&archivo, "bin\\cantidadPacientes.bin", "wb");
+    fopen_s(&archivoPacientes, "bin\\registroPacientes.bin", "ab");
+    strcpy(buffer.id, generarID());
+    printf("Ingrese los nombres del paciente: ");
+    scanf(" %[^\n]", buffer.nombres);
+    printf("Ingrese los apellidos del paciente: ");
+    scanf(" %[^\n]", buffer.apellidos);
+    printf("Ingrese la edad del paciente: ");
+    scanf("%d", &buffer.edad);
+    printf("Ingrese el sexo del paciente: ");
+    scanf(" %[^\n]", buffer.sexo);
+    printf("Ingrese el numero telefonico: ");
+    scanf(" %[^\n]", buffer.numTelefono);
+    printf("Ingrese la ciudad donde el paciente reside: ");
+    scanf(" %[^\n]", buffer.ciudad);
+    printf("OBSERVACIONES: ");
+    scanf(" %[^\n]", buffer.observaciones);
     
-    printf("Imprimiendo lista \n");
-    for(int i = 0; i<cantidad; i++){
-        printf("Id: %i\n", citas[i].id);
-        printf("Nombre: %s\n", citas[i].nombre);
-        printf("Edad: %s\n", citas[i].edad);
-        printf("Sexo: %.2f\n", citas[i].sexo);
-        printf("Dirección: %.2f\n", citas[i].direccionCasa);
-        printf("==============================================\n");
+    cantidadPacientes++;
+    //Guardar datos
+
+    fwrite(&cantidadPacientes, sizeof(int), 1, archivo);
+    fwrite(&buffer, sizeof(Paciente), 1, archivoPacientes);
+
+    fclose(archivo);
+    fclose(archivoPacientes);
+}
+
+void mostrarPacientes(void)
+{
+    fopen_s(&archivo, "bin\\cantidadPacientes.bin", "rb");
+    fopen_s(&archivoPacientes, "bin\\registroPacientes.bin", "rb");
+    if(archivo == NULL || archivoPacientes == NULL)
+    {
+        printf("Por favor registre un paciente\n");
     }
-    return 0;
+    else 
+    {   
+        fread(&cantidadPacientes, sizeof(int), 1, archivo);
+        fread(&registroPacientes, sizeof(Paciente) * cantidadPacientes, 1, archivoPacientes);
+        for(int i = 0; i < cantidadPacientes; i++)
+        {
+            LINE;
+            printf("Nombres: %s\n", registroPacientes[i].nombres);
+            printf("Apellidos: %s\n", registroPacientes[i].apellidos);
+            printf("Edad: %d\n", registroPacientes[i].edad);
+            printf("Sexo: %s\n", registroPacientes[i].sexo);
+            printf("Tel: %s\n", registroPacientes[i].numTelefono);
+            printf("Lugar de residencia: %s\n", registroPacientes[i].ciudad);
+            printf("ID: %s\n", registroPacientes[i].id);
+            printf("OBSERVACIONES: %s\n", registroPacientes[i].observaciones);
+            LINE;
+        }
+    }   
+    fclose(archivo);
+    fclose(archivoPacientes);
+}
+
+void gestionPacientes(void)
+{
+    cargarCantidadPacientes();
+    int op = 0;
+    do
+    {
+        printf("1. Agregar paciente\n2. Mostrar Pacientes\n3. Buscar paciente\n");
+        printf("4. Volver al menu principal\n");
+        printf("Ingrese una opcion: ");
+        scanf("%d", &op);
+        switch (op)
+        {
+        case 1:
+            agregarPaciente();
+            break;
+        case 2:
+            mostrarPacientes();
+            break;    
+        case 3:
+            //buscarPaciente();
+        case 4:
+            op = 4;
+        default:
+            printf("Opcion invalida\n");
+            break;
+        }
+    } while (op != 4);
+    
 }

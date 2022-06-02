@@ -268,6 +268,84 @@ void menuBuscarPaciente(void)
     system("cls");
     buscarPaciente(parametroDeBusqueda);
 }
+
+void editarDatosPaciente(void)
+{
+    char idPacientes[20];
+    printf("Ingrese la ID del paciente: ");
+    scanf(" %[^\n]", idPacientes);
+    for(int i = 0; i < cantidadPacientes; i++)
+    {
+        if(strcmp(idPacientes, registroPacientes[i].id) == 0)
+        {
+            actualizarDatos(i);
+        }   
+    }
+}
+
+void guardarCambios(void)
+{
+    fopen_s(&archivoPacientes, "bin\\registroPacientes.bin", "wb");
+    fwrite(&registroPacientes, sizeof(Paciente) * cantidadPacientes, 1, archivoPacientes);
+    fclose(archivoPacientes);
+}
+
+void actualizarDatos(int indice)
+{
+    char opcion;
+    char nuevosDatos[50];
+    char nuevaEdad;
+    printf("Editar Nombre? - (y/otra tecla) ");
+    scanf(" %c", &opcion);
+    if(opcion == 'y') 
+    {
+        printf("Nombres: ");
+        scanf(" %[^\n]", nuevosDatos);
+        strcpy(registroPacientes[indice].nombres, nuevosDatos);
+    }
+    printf("Editar Apellidos? - (y/otra tecla) ");
+    scanf(" %c", &opcion);
+    if(opcion == 'y')
+    {
+        printf("Apellidos: ");
+        scanf(" %[^\n]", nuevosDatos);
+        strcpy(registroPacientes[indice].apellidos, nuevosDatos);
+    }
+    printf("Editar edad? - (y/otra tecla) ");
+    scanf(" %c", &opcion);
+    if(opcion == 'y')
+    {
+        printf("Edad: ");
+        scanf("%d", &nuevaEdad);
+        registroPacientes[indice].edad = nuevaEdad;
+    }
+    printf("Editar numero telefonico? - (y/otra tecla) ");
+    scanf(" %c", &opcion);
+    if(opcion == 'y')
+    {
+        printf("Numero telefonico: ");
+        scanf(" %[^\n]", nuevosDatos);
+        strcpy(registroPacientes[indice].numTelefono, nuevosDatos);
+    }
+    printf("Editar ciudad de residencia? - (y/otra tecla) ");
+    scanf(" %c", &opcion);
+    if(opcion == 'y')
+    {
+        printf("Ciudad de residencia: ");
+        scanf(" %[^\n]", nuevosDatos);
+        strcpy(registroPacientes[indice].ciudad, nuevosDatos);
+    }
+    printf("Editar observaciones? - (y/otra tecla) ");
+    scanf(" %c", &opcion);
+    if(opcion == 'y')
+    {
+        printf("OBSERVACIONES: ");
+        scanf(" %[^\n]", nuevosDatos);
+        strcpy(registroPacientes[indice].observaciones, nuevosDatos);
+    }
+    guardarCambios();
+}
+
 //Funcion principal del modulo
 void gestionPacientes(void)
 {
@@ -279,7 +357,7 @@ void gestionPacientes(void)
     {
         actualizarRegistro();
         printf("1. Agregar paciente\n2. Mostrar Pacientes\n3. Buscar paciente\n");
-        printf("4. Volver al menu principal\n");
+        printf("4. Editar un registro\n5. Volver al menu principal\n");
         printf("Ingrese una opcion: ");
         scanf("%d", &op);
         switch (op)
@@ -298,12 +376,16 @@ void gestionPacientes(void)
             break;
         case 4:
             system("cls");
-            op = 4;
+            editarDatosPaciente();
+            break;
+        case 5:
+            system("cls");
+            op = 5;
             break;
         default:
             printf("Opcion invalida\n");
             break;
         }
-    } while (op != 4);
+    } while (op != 5);
     
 }

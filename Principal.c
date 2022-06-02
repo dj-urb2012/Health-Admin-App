@@ -6,9 +6,8 @@
 #include <time.h>
 #include "Utils\Funciones.c"
 #include "Utils\Sesion.c"
-#include "Pacientes\Pacientes.h"
 #include "Pacientes\Pacientes.c"
-//#include "Citas\Citas.c"
+#include "Citas\Citas.c"
 
 void configurarSesion(void);
 bool autenticarDatos(char p1[], char p2[]);
@@ -40,15 +39,13 @@ int main(int argc, char const *argv[])
             break;
         case 4:
             system("cls");
+            gestionCitas();
             break;
         case 5: 
             system("cls");
-            break;
-        case 6:
-            system("cls");
             configuracionDeUsuario();
             break;
-        case 7:
+        case 6:
             system("cls");
             printf("\nSE HA CERRADO SESION\n");
             break;
@@ -58,7 +55,7 @@ int main(int argc, char const *argv[])
             system("cls");
             break;
         }
-    } while (opcion != 7);
+    } while (opcion != 6);
     
 
     return 0;

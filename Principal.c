@@ -31,18 +31,15 @@ int main(int argc, char const *argv[])
             system("cls");
             gestionPacientes();
             break;
-        case 2: 
-            system("cls");
-            break;
-        case 3:
+        case 2:
             system("cls");
             gestionCitas();
             break;
-        case 4: 
+        case 3: 
             system("cls");
             configuracionDeUsuario();
             break;
-        case 5:
+        case 4:
             system("cls");
             printf("\nSE HA CERRADO SESION\n");
             break;
@@ -52,7 +49,7 @@ int main(int argc, char const *argv[])
             system("cls");
             break;
         }
-    } while (opcion != 5);
+    } while (opcion != 4);
     
 
     return 0;

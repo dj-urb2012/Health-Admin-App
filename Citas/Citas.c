@@ -1,13 +1,17 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include "Citas.h"
 
+char contenedorIDs[1000][20];
 Citas registroCitas[NUM_MAX_CITAS];
 Citas bufferCitas;
 FILE* cantidadCitas;
 FILE* archivoRegistroCitas;
-
+FILE* archivoID;
+FILE* cantidadPac;
 int cantidadRegCitas = 0;
+int cantPacientes;
 
 void actualizarRegistroCitas(void)
 {
@@ -25,25 +29,51 @@ void cargarCantidadCitas(void)
     fclose(cantidadCitas);
 }
 
-void agregarCita(void)
+int agregarCita(void)
 {
-    fopen_s(&archivoRegistroCitas, "bin\\registroCitas.bin", "ab");
-    fopen_s(&cantidadCitas, "bin\\cantidadCitas.bin", "wb");
-    printf("Ingrese la hora: ");
-    scanf(" %[^\n]", bufferCitas.hora);
-    printf("Ingrese la fecha: ");
-    scanf(" %[^\n]", bufferCitas.fecha);
-    printf("Ingrese el area donde sera atendido el paciente: ");
-    scanf(" %[^\n]", bufferCitas.area);
-    printf("Ingrese la ID del paciente: ");
-    scanf(" %[^\n]", bufferCitas.pacienteID);
-    printf("Ingrese el estado de la cita (pendiente / asistio / no asisitio)");
-    scanf(" %[^\n]", bufferCitas.estado);
-    cantidadRegCitas++;
-    fwrite(&bufferCitas, sizeof(Citas), 1, archivoRegistroCitas);
-    fwrite(&cantidadRegCitas, sizeof(int), 1, cantidadCitas);
-    fclose(archivoRegistroCitas);
-    fclose(cantidadCitas);
+    fopen_s(&archivoID, "bin\\IDs.bin", "rb");
+    if(archivoID == NULL) 
+    {
+        printf("No hay pacientes registrados\n");
+        system("pause");
+        return 1;
+    }
+    else
+    {
+        fopen_s(&cantidadPac, "bin\\cantidadPacientes.bin", "rb");
+        fread(&cantPacientes, sizeof(int), 1, cantidadPac);
+        fread(&contenedorIDs, sizeof(contenedorIDs), 1, archivoID);
+        printf("Ingrese la ID del paciente: ");
+        scanf(" %[^\n]", bufferCitas.pacienteID);
+        for(int i = 0; i < cantPacientes; i++)
+        {
+            if(strcmp(bufferCitas.pacienteID, contenedorIDs[i]) == 0)
+            {
+                fopen_s(&archivoRegistroCitas, "bin\\registroCitas.bin", "ab");
+                fopen_s(&cantidadCitas, "bin\\cantidadCitas.bin", "wb");
+                printf("Ingrese la hora: ");
+                scanf(" %[^\n]", bufferCitas.hora);
+                printf("Ingrese la fecha: ");
+                scanf(" %[^\n]", bufferCitas.fecha);
+                printf("Ingrese el area donde sera atendido el paciente: ");
+                scanf(" %[^\n]", bufferCitas.area);
+                strcpy(bufferCitas.estado, "pendiente");
+                cantidadRegCitas++;
+                fwrite(&bufferCitas, sizeof(Citas), 1, archivoRegistroCitas);
+                fwrite(&cantidadRegCitas, sizeof(int), 1, cantidadCitas);
+                fclose(archivoRegistroCitas);
+                fclose(cantidadCitas);
+                system("cls");
+                return 0;
+            }
+            else 
+            {
+                printf("Paciente no registrado\n");
+                system("pause");
+            }
+           
+        }
+    }
 }
 
 void citasNoAsistidas(void)
@@ -144,14 +174,42 @@ void menuMostrarCitas(void)
         case 5:
             op = 5;
             system("cls");
+            break;
         default:
             system("cls");
-            printf("Opcion invalida");
+            printf("Opcion invalida\n");
             break;
         }
 
     } while (op != 5);
     
+}
+
+void cambiarEstadoCita(void)
+{
+    fopen_s(&archivoRegistroCitas, "bin\\registroCitas.bin", "wb");
+    char idEstado[20];
+    char nuevoEstado[30];
+    bool citaExiste = false;
+    int indice = 0;
+    printf("Ingrese la ID del paciente: ");
+    scanf(" %[^\n]", idEstado);
+    for(int i = 0; i < cantidadRegCitas; i++)
+    {
+        if(strcmp(idEstado, registroCitas[i].pacienteID) == 0)
+        {
+            citaExiste = true;
+            indice = i;
+        }
+    }
+    if(citaExiste = true)
+    {
+        printf("Ingrese el estado de la cita (asistio / no asistio) ");
+        scanf(" %[^\n]", nuevoEstado);
+        strcpy(registroCitas[indice].estado, nuevoEstado);
+        fwrite(&registroCitas, sizeof(Citas) * cantidadRegCitas, 1, archivoRegistroCitas);
+    } else printf("La cita no esta registrada\n");
+    fclose(archivoRegistroCitas);
 }
 
 void gestionCitas(void)
@@ -161,7 +219,7 @@ void gestionCitas(void)
     do
     {
         actualizarRegistroCitas();
-        printf("1. Agregar una cita\n2. Mostrar Citas\n3. Volver al menu principal\n");
+        printf("1. Agregar una cita\n2. Mostrar Citas\n3. Editar estado de cita\n4. Volver al menu principal\n");
         printf("Ingrese una opcion: ");
         scanf("%d", &op);
         switch (op)
@@ -169,12 +227,19 @@ void gestionCitas(void)
         case 1:
             system("cls");
             agregarCita();
+            system("cls");
             break;
         case 2:
             system("cls");
             menuMostrarCitas();
+            break;
         case 3:
-            op = 3;
+            system("cls");
+            cambiarEstadoCita();
+            system("cls");
+            break;
+        case 4:
+            op = 4;
             system("cls");
             break;
         default:
@@ -182,6 +247,6 @@ void gestionCitas(void)
             printf("Opcion invalida\n");
             break;
         }
-    } while (op != 3);
+    } while (op != 4);
     
 }

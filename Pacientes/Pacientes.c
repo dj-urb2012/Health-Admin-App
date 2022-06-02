@@ -288,6 +288,7 @@ void guardarCambios(void)
     fopen_s(&archivoPacientes, "bin\\registroPacientes.bin", "wb");
     fwrite(&registroPacientes, sizeof(Paciente) * cantidadPacientes, 1, archivoPacientes);
     fclose(archivoPacientes);
+    system("cls");
 }
 
 void actualizarDatos(int indice)

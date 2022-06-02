@@ -4,4 +4,6 @@ usuario.bin
 cantidadPacientes.bin
 registroPacientes.bin
 IDs.bin
+registroCitas.bin
+cantidadCitas.bin
 .vscode
